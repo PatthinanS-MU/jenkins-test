@@ -1,0 +1,25 @@
+{
+  "name": "jenkins",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest --forceExit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PatthinanS-MU/jenkins-test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/PatthinanS-MU/jenkins-test/issues"
+  },
+  "homepage": "https://github.com/PatthinanS-MU/jenkins-test#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
