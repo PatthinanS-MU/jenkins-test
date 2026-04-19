@@ -41,7 +41,6 @@ pipeline {
                             
                             aiAgent(
                                 agent: geminiCli(),
-                                model: 'gemini-2.5-flash', // Use the native Google model name
                                 prompt: '''
                                     Read the file `index.js`. 
                                     Understand the 6 electricity API endpoints and their expected JSON structures.
