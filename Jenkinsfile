@@ -37,7 +37,12 @@ pipeline {
                     sh '''
                         gemini --model "gemini-2.5-flash" \
                                --yolo \
-                               --prompt "Read index.js. Understand the 6 electricity API endpoints and their expected JSON structures. Generate a comprehensive test suite using Jest and Supertest. The tests must check for 200 OK statuses, correct data types, and handle a 404 error case. Write the complete, executable JavaScript code. CRITICAL: Output ONLY raw javascript code without markdown blockquotes." \
+                               --prompt "Read index.js. Understand the 6 electricity API endpoints. Generate a comprehensive test suite using Jest and Supertest. 
+                               CRITICAL INSTRUCTIONS:
+                               1. To prevent Jest open handles, ensure the server is closed after tests. Use an afterAll() block to close the server instance if app.listen is active.
+                               2. The tests must check for 200 OK statuses and ensure the response body is defined, but do not strictly assert exact data values since you cannot see the underlying JSON files.
+                               3. Include a test to handle a 404 error case. 
+                               Write the complete, executable JavaScript code. Output ONLY raw javascript code without markdown blockquotes." \
                                > tests/api.test.js
                     '''
                 }
