@@ -29,25 +29,29 @@ pipeline {
         // --- NEW STAGE: The Agentic AI ---
         stage('AI Test Generation') {
             steps {
-                withCredentials([string(credentialsId: 'google-ai-key', variable: 'GEMINI_API_KEY')]) {
+                // 1. Pull the key from Jenkins credentials
+                withCredentials([string(credentialsId: 'ai-api-key', variable: 'GOOGLE_API_KEY')]) {
                     
-                    // We REMOVED the nodejs('NodeJS-18') wrapper here!
-                    // Now it will use the global Node 20 installed on the OS.
-                    
-                    echo "Waking up the Gemini CLI Agent..."
-                    
-                    aiAgent(
-                        agent: geminiCli(),
-                        prompt: '''
-                            Read the file `index.js`. 
-                            Understand the 6 electricity API endpoints and their expected JSON structures.
-                            Generate a comprehensive test suite using Jest and Supertest.
-                            The tests must check for 200 OK statuses, correct data types, and handle a 404 error case.
-                            Write the complete, executable JavaScript code into a new file located at `tests/api.test.js`.
-                            CRITICAL: Output ONLY raw javascript code. Do not wrap it in markdown blockquotes.
-                        ''',
-                        yoloMode: true 
-                    )
+                    // 2. Duplicate the key into GEMINI_API_KEY just to be safe
+                    withEnv(["GEMINI_API_KEY=${GOOGLE_API_KEY}"]) {
+                        
+                        // 3. Keep the NodeJS wrapper so the plugin can find 'npx'
+                            echo "Waking up Gemini via AI Studio..."
+                            
+                            aiAgent(
+                                agent: geminiCli(),
+                                model: 'gemini-2.5-flash', // Use the native Google model name
+                                prompt: '''
+                                    Read the file `index.js`. 
+                                    Understand the 6 electricity API endpoints and their expected JSON structures.
+                                    Generate a comprehensive test suite using Jest and Supertest.
+                                    The tests must check for 200 OK statuses, correct data types, and handle a 404 error case.
+                                    Write the complete, executable JavaScript code into a new file located at `tests/api.test.js`.
+                                    CRITICAL: Output ONLY raw javascript code. Do not wrap it in markdown blockquotes.
+                                ''',
+                                yoloMode: true 
+                            )
+                    }
                 }
             }
         }
