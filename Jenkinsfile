@@ -29,15 +29,18 @@ pipeline {
         // --- NEW STAGE: The Agentic AI ---
         stage('AI Test Generation') {
             steps {
-                withCredentials([string(credentialsId: 'openrouter-api-key', variable: 'OPENAI_API_KEY')]) {
-                    withEnv(['OPENAI_BASE_URL=https://openrouter.ai/api/v1']) {
+                // 1. Pull the key from Jenkins credentials
+                withCredentials([string(credentialsId: 'ai-api-key', variable: 'GOOGLE_API_KEY')]) {
+                    
+                    // 2. Duplicate the key into GEMINI_API_KEY just to be safe
+                    withEnv(["GEMINI_API_KEY=${GOOGLE_API_KEY}"]) {
                         
-                        // NEW: Wrap the plugin call explicitly in the NodeJS environment
+                        // 3. Keep the NodeJS wrapper so the plugin can find 'npx'
                         nodejs('NodeJS-18') {
-                            echo "Waking up the AI Agent via OpenRouter..."
+                            echo "Waking up Gemini via AI Studio..."
                             
                             aiAgent(
-                                model: 'google/gemini-2.5-flash',
+                                model: 'gemini-2.5-flash', // Use the native Google model name
                                 prompt: '''
                                     Read the file `index.js`. 
                                     Understand the 6 electricity API endpoints and their expected JSON structures.
@@ -49,12 +52,11 @@ pipeline {
                                 yoloMode: true 
                             )
                         }
-                        
                     }
                 }
             }
         }
-        
+
         stage('Quality Gate: Unit Tests') {
             steps {
                 // Runs api.test.js. If this fails, the pipeline stops immediately.
