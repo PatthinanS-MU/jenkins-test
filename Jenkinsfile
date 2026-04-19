@@ -40,17 +40,21 @@ pipeline {
                             echo "Waking up Gemini via AI Studio..."
                             
                             aiAgent(
-                                model: 'gemini-2.5-flash', // Use the native Google model name
-                                prompt: '''
-                                    Read the file `index.js`. 
-                                    Understand the 6 electricity API endpoints and their expected JSON structures.
-                                    Generate a comprehensive test suite using Jest and Supertest.
-                                    The tests must check for 200 OK statuses, correct data types, and handle a 404 error case.
-                                    Write the complete, executable JavaScript code into a new file located at `tests/api.test.js`.
-                                    CRITICAL: Output ONLY raw javascript code. Do not wrap it in markdown blockquotes.
-                                ''',
-                                yoloMode: true 
-                            )
+                            agent: geminiCli(), // <-- THIS IS THE MAGIC LINE
+                            prompt: '''
+                                Read the file `index.js`. 
+                                Understand the 6 electricity API endpoints and their expected JSON structures.
+                                Generate a comprehensive test suite using Jest and Supertest.
+                                The tests must check for 200 OK statuses, correct data types, and handle a 404 error case.
+                                Write the complete, executable JavaScript code into a new file located at `tests/api.test.js`.
+                                CRITICAL: Output ONLY raw javascript code. Do not wrap it in markdown blockquotes.
+                            ''',
+                            
+                            // A quick warning on approvals in CI/CD:
+                            // If you set `requireApprovals: true`, the pipeline will pause and wait for a human.
+                            // If you want it to run completely autonomously, you might need to leave this out
+                            // or pass the CLI's specific "yolo" or headless flag.
+                        )
                         }
                     }
                 }
