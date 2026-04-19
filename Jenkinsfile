@@ -40,7 +40,7 @@ pipeline {
                             echo "Waking up Gemini via AI Studio..."
                             
                             aiAgent(
-                                agent: geminicli(),
+                                agent: geminiCli(),
                                 model: 'gemini-2.5-flash', // Use the native Google model name
                                 prompt: '''
                                     Read the file `index.js`. 
