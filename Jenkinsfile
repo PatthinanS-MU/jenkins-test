@@ -3,7 +3,7 @@ pipeline {
     agent any 
 
     tools {
-        nodejs '18' // This MUST match the name you gave it in Step 2
+        nodejs '20' // This MUST match the name you gave it in Step 2
     }
 
     // Defines the environment variables, similar to github.sha
@@ -36,7 +36,7 @@ pipeline {
                     withEnv(["GEMINI_API_KEY=${GOOGLE_API_KEY}"]) {
                         
                         // 3. Keep the NodeJS wrapper so the plugin can find 'npx'
-                        nodejs('18') {
+                        nodejs('20') {
                             echo "Waking up Gemini via AI Studio..."
                             
                             aiAgent(
