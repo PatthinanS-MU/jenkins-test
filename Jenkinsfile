@@ -36,7 +36,7 @@ pipeline {
                     withEnv(["GEMINI_API_KEY=${GOOGLE_API_KEY}"]) {
                         
                         // 3. Keep the NodeJS wrapper so the plugin can find 'npx'
-                        nodejs('NodeJS-18') {
+                        nodejs('18') {
                             echo "Waking up Gemini via AI Studio..."
                             
                             aiAgent(
