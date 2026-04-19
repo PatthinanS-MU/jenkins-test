@@ -18,6 +18,9 @@ pipeline {
         }
 
         stage('Setup & Install') {
+            tools {
+                nodejs '18' // This MUST match the name you gave it in Step 2
+            }
             steps {
                 // Installs Express, Jest, Supertest, and other dependencies
                 sh 'npm install'
