@@ -3,7 +3,7 @@ pipeline {
     agent any 
 
     tools {
-        nodejs 'NodeJS-18' // This MUST match the name you gave it in Step 2
+        nodejs '18' // This MUST match the name you gave it in Step 2
     }
 
     // Defines the environment variables, similar to github.sha
