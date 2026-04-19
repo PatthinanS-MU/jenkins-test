@@ -30,7 +30,7 @@ pipeline {
         // --- NEW STAGE: The Agentic AI ---
         stage('AI Test Generation') {
             steps {
-                withCredentials([string(credentialsId: 'google-ai-key', variable: 'GEMINI_API_KEY')]) {
+                withCredentials([string(credentialsId: 'ai-api-key', variable: 'GEMINI_API_KEY')]) {
                     echo "Bypassing the plugin: Waking up Gemini directly via Shell..."
                     
                     // We use standard Linux redirection ( > ) to save the AI's output into the file
