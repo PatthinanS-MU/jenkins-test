@@ -2,9 +2,7 @@ pipeline {
     // This tells Jenkins to run on any available worker node
     agent any 
 
-    tools {
-        nodejs '18' // This MUST match the name you gave it in Step 2
-    }
+    
 
     // Defines the environment variables, similar to github.sha
     environment {
@@ -57,6 +55,9 @@ pipeline {
         }
 
         stage('Quality Gate: Unit Tests') {
+            tools {
+                nodejs '18' // This MUST match the name you gave it in Step 2
+            }
             steps {
                 // Runs api.test.js. If this fails, the pipeline stops immediately.
                 sh 'npm test'
