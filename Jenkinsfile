@@ -59,18 +59,18 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                // Packages the app ONLY if the tests passed
-                echo "Building Docker Image: electricity-api:${DOCKER_TAG}"
-                sh 'docker build -t electricity-api:${DOCKER_TAG} .'
-            }
-        }
+        // stage('Build Docker Image') {
+        //     steps {
+        //         // Packages the app ONLY if the tests passed
+        //         echo "Building Docker Image: electricity-api:${DOCKER_TAG}"
+        //         sh 'docker build -t electricity-api:${DOCKER_TAG} .'
+        //     }
+        // }
     }
     
     post {
         success {
-            echo "Pipeline completed successfully! The Docker image is ready."
+            echo "Pipeline completed successfully!."
         }
         failure {
             echo "Pipeline failed. Check the logs above to see if the tests or build broke."
