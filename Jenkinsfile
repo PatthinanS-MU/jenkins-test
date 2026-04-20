@@ -2,8 +2,6 @@ pipeline {
     // This tells Jenkins to run on any available worker node
     agent any 
 
-    
-
     // Defines the environment variables, similar to github.sha
     environment {
         DOCKER_TAG = "prod-${GIT_COMMIT[0..7]}"
@@ -53,6 +51,7 @@ pipeline {
         //         }
         //     }
         // }
+        //test
 
         stage('AI Test Generation') {
             steps {
