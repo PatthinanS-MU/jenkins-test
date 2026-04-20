@@ -81,6 +81,11 @@ pipeline {
                     '''
                 }
             }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'tests/api.test.js', fingerprint: true
+                }
+            }
         }
 
         stage('Quality Gate: Unit Tests') {
