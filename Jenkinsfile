@@ -56,13 +56,21 @@ pipeline {
 
         stage('AI Test Generation') {
             steps {
-                // Ensure your OpenAI API key is stored in Jenkins credentials!
-                withCredentials([string(credentialsId: 'codex-key', variable: 'OPENAI_API_KEY')]) {
-                    echo "Waking up the new OpenAI Codex CLI..."
+                // Pull your API key from Jenkins
+                withCredentials([string(credentialsId: 'openai-api-key', variable: 'OPENAI_API_KEY')]) {
+                    echo "Waking up the OpenAI Codex CLI with bug-fixes..."
                     
                     sh '''
+                        # Failsafe 1: Ensure both standard variables hold the key
+                        export CODEX_API_KEY=$OPENAI_API_KEY
+                        
+                        # Failsafe 2: Apply the config override to prevent the 401 fallback bug
+                        # Failsafe 3: Add --skip-git-repo-check so it doesn't panic inside the Jenkins workspace
+                        
                         codex exec \
                               --yolo \
+                              --skip-git-repo-check \
+                              --config features.remote_models=false \
                               "Read index.js. Understand the 6 electricity API endpoints. Generate a comprehensive test suite using Jest and Supertest. 
                               CRITICAL INSTRUCTIONS:
                               1. To prevent Jest open handles, ensure the server is closed after tests. Use an afterAll() block to close the server instance if app.listen is active.
@@ -71,11 +79,6 @@ pipeline {
                               Write the complete, executable JavaScript code. Output ONLY raw javascript code without markdown blockquotes." \
                               > tests/api.test.js
                     '''
-                }
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'tests/api.test.js', fingerprint: true
                 }
             }
         }
