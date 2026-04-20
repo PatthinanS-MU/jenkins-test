@@ -57,7 +57,7 @@ pipeline {
         stage('AI Test Generation') {
             steps {
                 // Pull your API key from Jenkins
-                withCredentials([string(credentialsId: 'openai-api-key', variable: 'OPENAI_API_KEY')]) {
+                withCredentials([string(credentialsId: 'codex-api-key', variable: 'OPENAI_API_KEY')]) {
                     echo "Waking up the OpenAI Codex CLI with bug-fixes..."
                     
                     sh '''
